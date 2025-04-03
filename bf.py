@@ -36,4 +36,22 @@ class BF:
                         cmd.append(c)
                     else:
                         raise SyntaxError
+                    body = "".join(cmd)
+
+                    # Executa o códifo na string body
+                    while self.memory[self.index] != 0:
+                        self.run(body)
+                case "]":
+                    raise SystemError
+def main():
+    vm = BF()
+    filename= sys.argv[-1]
+
+    with open(filename, "r") as fd:
+        source = fd.read()
+    vm.run(source)
+
+if __name__ == "__main__":
+    main()
+
                 
