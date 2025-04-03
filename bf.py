@@ -1,6 +1,7 @@
 import sys
 import click
 
+# Brainfuck
 class BF:
     def __init__(self):
         self.memory = [0] * 10_000
