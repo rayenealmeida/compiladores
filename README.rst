@@ -1,16 +1,10 @@
-=======
-Avisos!
-=======
 
-* Entrega do trabalho final: https://classroom.github.com/a/Hppw7Zh2 (até segunda)
-* Entrega da lista: https://classroom.github.com/a/ylDz2StW (até segunda)
 
 ==============
 Compiladores 1
 ==============
 
-Este é o Git da disciplina Compiladores 1. Aqui ficará o material produzido em sala de aula 
-assim como tarefas, wiki e discussões. Este arquivo contêm informações básicas sobre a disciplina e o 
+Este é o Git da disciplina Compiladores. 
 plano de ensino do semestre.
 
 
