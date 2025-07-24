@@ -1,0 +1,87 @@
+?start     : program
+
+program    : stmt*
+
+?stmt      : var_decl
+           | simple_stmt
+
+return_stmt: RETURN expr? ";"
+
+class_decl : CLASS VAR ("<" VAR)? "{" class_body "}"
+class_body : (method_decl)*
+method_decl : VAR "(" params ")" block
+function_decl : FUN VAR "(" params ")" block
+
+print_cmd  : PRINT expr ";"
+var_decl   : "var" VAR ("=" expr)? ";"
+block      : "{" stmt* "}"
+if_cmd     : "if" "(" expr ")" simple_stmt ("else" simple_stmt)?
+
+// EXPRESSÕES
+?expr      : assignment
+?assignment: call _EQUAL assignment   -> assign
+           | VAR _EQUAL assignment  -> assign
+           | logic_or
+
+?logic_or  : logic_and
+           | logic_or "or" logic_and   -> or_op
+?logic_and : equality
+           | logic_and "and" equality  -> and_op
+?equality  : comparison
+           | equality "==" comparison  -> eq
+           | equality "!=" comparison  -> ne
+?comparison: term
+           | comparison ">" term        -> gt
+           | comparison ">=" term      -> ge
+           | comparison "<" term        -> lt
+           | comparison "<=" term      -> le
+?term     : factor
+           | term "+" factor           -> add
+           | term "-" factor           -> sub
+?factor   : unary
+           | factor "*" unary          -> mul
+           | factor "/" unary          -> div
+?unary    : call
+           | "!" unary                -> not_op
+           | "-" unary                -> neg
+?call     : primary ("(" params ")" | "." VAR)*
+?primary  : VAR
+           | NUMBER
+           | STRING
+           | BOOL
+           | NIL
+           | SUPER "." VAR           -> super_getattr
+           | "(" expr ")"
+
+params     : (expr ("," expr)*)?
+
+BOOL     : "true" | "false"
+CLASS    : "class"
+FUN      : "fun"
+RETURN   : "return"
+PRINT    : "print"
+SUPER    : "super"
+NIL      : "nil"
+SEMICOLON: ";"
+NUMBER   : /[0-9]+(\.[0-9]+)?/
+STRING   : /"([^"\\\n]|\\[nrt\\])*"/
+COMMENT  : "//" /[^\n]*/
+_EQUAL    : "="
+VAR      : /[a-zA-Z_]\w*/
+%ignore /\s/ | COMMENT
+
+simple_stmt : print_cmd
+            | return_stmt
+            | expr ";"
+            | block
+            | if_cmd
+            | while_cmd
+            | for_cmd
+            | class_decl
+            | function_decl
+
+while_cmd : "while" "(" expr ")" simple_stmt
+for_cmd : "for" "(" for_init for_cond for_incr ")" simple_stmt
+for_init : var_decl | expr ";" | ";"
+for_cond : expr ";" | ";"
+for_incr : expr |    // incremento pode ser vazio
